@@ -6,6 +6,28 @@ if (!function_exists('setting')) {
 	}
 }
 
+if (!function_exists('get_parent')) {
+	function get_parent($dep_id) {
+		// $list_department = [];
+
+		$department = \App\Model\Department::find($dep_id);
+		if (null !== $department->parent && $department->parent > 0) {
+			// array_push($list_department, $department->parent);
+			return get_parent($department->parent).",".$dep_id;
+		} else {
+			return $dep_id;
+		}
+		// return $list_department;
+	}
+}
+
+////// Scan Mall Id Exists /////
+if (!function_exists('check_mall')) {
+	function check_mall($id, $pid) {
+		return \App\Model\MallProduct::where('product_id', $pid)->where('mall_id', $id)->count() > 0?true:false;
+	}
+}
+
 if (!function_exists('up')) {
 	function up() {
 		return new \App\Http\Controllers\Upload;
